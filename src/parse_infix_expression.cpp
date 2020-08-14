@@ -1,8 +1,8 @@
-#include "parse_expression.hpp"
+#include "parse_infix_expression.hpp"
 
 
-auto parse_expression(std::string_view input)
- -> std::tuple<std::vector<Token>, std::optional<parsing_result_t<Token>>>
+auto parse_infix_expression(std::string_view input)
+ -> std::tuple<Infix_expression, std::optional<parsing_result_t<Token>>>
 {
     std::vector<Token>                      tokens;
     std::optional<parsing_result_t<Token>>  opt_erroneous_result =std::nullopt;

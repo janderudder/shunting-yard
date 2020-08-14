@@ -1,7 +1,7 @@
 #include "Token.hpp"
 #include "parse_token.hpp"
 #include "to_string.hpp"
-#include "parse_expression.hpp"
+#include "parse_infix_expression.hpp"
 #include <iostream>
 
 
@@ -12,7 +12,7 @@ int main()
 
     std::cout << "\ninput: " <<  input << "\n\n";
 
-    auto const [tokens, erroneous_parsing_result] = parse_expression(input);
+    auto const [tokens, erroneous_parsing_result] = parse_infix_expression(input);
 
     std::cout << "\ntokens (" << tokens.size() << "):\n";
 
