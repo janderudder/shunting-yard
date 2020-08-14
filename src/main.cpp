@@ -1,6 +1,6 @@
 #include "Token.hpp"
 #include "parse_token.hpp"
-#include "output_parsing.hpp"
+#include "to_string.hpp"
 #include <iostream>
 #include <stack>
 
@@ -20,7 +20,7 @@ struct Parser
             if (expecting == Operator)
             {
                 auto const [op, rem] = parse_operator(input);
-                output_parsing_result({op, rem}, std::cout);
+                std::cout << to_string({op, rem}) << "\n";
                 if (op) {
                     tokens.push_back(*op);
                 } else {
@@ -32,7 +32,7 @@ struct Parser
             else
             {
                 auto const [op, rem] = parse_operand(input);
-                output_parsing_result({op, rem}, std::cout);
+                std::cout << to_string({op, rem}) << "\n";
                 if (op) {
                     tokens.push_back(*op);
                 } else {

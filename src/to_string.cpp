@@ -1,6 +1,26 @@
-#include "output_parsing.hpp"
-#include <iostream>
-#include <string>
+#include "to_string.hpp"
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+auto to_string(parsing_result_t<Token> const& parsing_result) -> std::string
+{
+    auto const& [token, remainder] = parsing_result;
+
+    using namespace std::string_literals;
+
+    if (!token) {
+        return "Syntax error when parsing \""s + remainder.data() + "\"";
+    }
+
+    return {
+        ((token_type(*token) == Token_type::Operator)
+            ? "operator "s
+            : "operand "s
+        ) + to_string(*token).data()
+    };
+}
+
 
 
 
@@ -32,26 +52,4 @@ auto to_string(Token const& token) -> std::string
             return std::to_string(tok.value);
         }
     }, token);
-}
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-void output_parsing_result(
-    parsing_result_t<Token> const&  result,
-    std::ostream&                   os
-){
-    auto const& [token, remainder] = result;
-
-    auto const type_str = (token && token_type(*token) == Token_type::Operator)
-        ? "operator" : "operand";
-
-    if (token) {
-        os  << type_str << " : " << to_string(*token) << "\n"
-            << "remainder : " << remainder << "\n";
-    }
-    else {
-        os << "Syntax error. Input: \"" << remainder << "\"\n";
-    }
 }
