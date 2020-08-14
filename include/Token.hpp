@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include <type_traits>
 #include <variant>
 
@@ -16,7 +15,7 @@ struct Operator_token
 ////////////////////////////////////////////////////////////////////////////////
 struct Operand_token
 {
-    std::string value;
+    double value;
 };
 
 
@@ -29,36 +28,18 @@ using Token = std::variant<Operator_token, Operand_token>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-constexpr auto to_string(Operator_token::Id id) -> std::string_view
-{
-    using Id = Operator_token::Id;
-    switch (id) {
-        case Id::Add: return "+"; case Id::Sub: return "-";
-        case Id::Mul: return "*"; case Id::Div: return "/";
-        default: return "§";
-    };
-}
+enum class Token_type { Operator, Operand };
 
 
 
 
 ////////////////////////////////////////////////////////////////////////////////
-constexpr auto to_string(Token const& token) -> std::string_view
+constexpr Token_type token_type(Token const& token)
 {
-    using op_token_to_string_t = std::string_view(*)(Operator_token::Id);
-    op_token_to_string_t op_to_str = to_string;
-
-    constexpr auto token_to_string_visitor = [](auto&& tok) -> std::string_view
-    {
-        using tok_type = std::decay_t<decltype(tok)>;
-
-        if constexpr(std::is_same_v<tok_type, Operator_token>) {
-            return to_string(tok.id);
-        }
-        else {
-            return tok.value;
-        }
-    };
-
-    return std::visit(token_to_string_visitor, token);
+    return std::visit([](auto&& tok) {
+        using Tok = std::decay_t<decltype(tok)>;
+        return std::is_same_v<Tok, Operator_token>
+            ? Token_type::Operator
+            : Token_type::Operand;
+    }, token);
 }
