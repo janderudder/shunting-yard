@@ -1,40 +1,64 @@
 #include "parse_infix_expression.hpp"
 #include "parse_token.hpp"
+#include "Program_options.hpp"
 #include "to_postfix_expression.hpp"
 #include "to_string.hpp"
 #include "Token.hpp"
 #include <iostream>
 
 
-int main(int const argc, char const* const* const argv)
+int main(int const argc, char** argv)
 {
-    if (argc < 2) {
-        std::cout << "Please enter an input string.\n";
-        return -1;
+    Program_options program_options {argc, argv};
+
+    if (program_options.should_quit())
+    {
+        std::cout << program_options.string() << "\n";
+        return program_options.exit_code();
     }
 
-    auto const input = argv[1];
 
-    std::cout << "\ninput string: " <<  input << "\n\n";
+    auto const input = program_options.string();
+    std::cout << "input: " <<  input << "\n\n";
 
-    auto const [tokens, erroneous_parsing_result] = parse_infix_expression(input);
 
-    if (erroneous_parsing_result) {
-        std::cout << to_string(*erroneous_parsing_result) << "\n\n";
+    // input parsing
+    ////////////////////////////////////////////////////////////////////////
+    auto const [tokens, opt_error_remainder] = parse_infix_expression(input);
+
+
+    // syntax error handling
+    ////////////////////////////////////////////////////////////////////////
+    if (opt_error_remainder) {
+        std::cout << to_string(*opt_error_remainder) << "\n\n";
+        return 0;
     }
 
-    std::cout << "tokens (" << tokens.size() << "):\n";
 
-    for (auto const& token : std::as_const(tokens)) {
-        std::cout << "'" << to_string(token) << "'\n";
+    // token list
+    ////////////////////////////////////////////////////////////////////////
+    if (program_options.get_switch(Program_options::Show_token_list))
+    {
+        std::cout << "tokens (" << tokens.size() << "):\n";
+        for (unsigned i=0; i < tokens.size(); ++i)
+        {
+            std::cout << "'" << to_string(tokens[i]) << "'";
+            if (i != tokens.size()-1) {
+                std::cout << ", ";
+            }
+        }
+        std::cout << "\n\n";
     }
-    std::cout << "\n";
 
+
+    // postfix expression
+    ////////////////////////////////////////////////////////////////////////
     auto const prefix_expression = to_postfix_expression(tokens);
 
-    std::cout << "postfix notation:\n";
+    std::cout << "output:\n";
     for (auto const& token : prefix_expression) {
         std::cout << to_string(token) << " ";
     }
     std::cout << "\n";
+
 }
