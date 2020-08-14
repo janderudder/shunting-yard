@@ -1,13 +1,11 @@
 #pragma once
-#include "Token.hpp"
+#include "Expression_types.hpp"
 #include "parse_token.hpp"
+#include "Token.hpp"
 #include <optional>
 #include <string_view>
 #include <tuple>
 #include <vector>
-
-
-using Infix_expression = std::vector<Token>;
 
 
 auto parse_infix_expression(std::string_view input)
