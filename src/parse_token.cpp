@@ -52,10 +52,11 @@ auto parse_operator(std::string_view input) -> parsing_result_t<Operator_token>
             default: return std::nullopt;
         }})(trimmed_input[0]);
 
-    if (!opt_operator) {
-        return {opt_operator, trimmed_input};
-    }
-    return {opt_operator, trimmed_input.substr(1)};
+    std::string_view remainder = (opt_operator)
+        ? trimmed_input.substr(1)
+        : trimmed_input;
+
+    return {opt_operator, remainder};
 }
 
 
