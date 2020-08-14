@@ -23,7 +23,7 @@ auto to_postfix_expression(Infix_expression const& infix_expression)
  -> Postfix_expression
 {
     std::vector<Token> output;
-    std::stack<Token> operators;
+    std::stack<Operator_token> operators;
 
     auto const flush_stack = [&output, &operators]
     {
@@ -44,14 +44,9 @@ auto to_postfix_expression(Infix_expression const& infix_expression)
             auto const& current_op = std::get<Operator_token>(token);
 
             if (!operators.empty()
-                && token_type(operators.top()) == Token_type::Operator)
+                && has_priority_over(operators.top(), current_op))
             {
-                auto const& op_top = std::get<Operator_token>(operators.top());
-
-                if (!has_priority_over(current_op, op_top))
-                {
-                    flush_stack();
-                }
+                flush_stack();
             }
 
             operators.push(current_op);
