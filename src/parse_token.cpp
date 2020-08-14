@@ -72,5 +72,7 @@ auto parse_operand(std::string_view input) -> parsing_result_t<Operand_token>
         return {std::nullopt, trimmed_input};
     }
 
-    return {{Operand_token{n}}, trimmed_input.substr(iss.tellg())};
+    auto const rem_start = std::min(size_t(iss.tellg()), trimmed_input.size());
+
+    return {{Operand_token{n}}, trimmed_input.substr(rem_start)};
 }
