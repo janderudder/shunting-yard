@@ -9,7 +9,7 @@ Knows only real numbers and `+`, `-`, `/`, `*` operators.
 
 
 ## Build:
-With `premake` installed, in project's directory:
+With [premake](https://premake.github.io/) installed, in project's directory:
 ```shell
 premake gmake2 --file=./build/premake5.lua
 make
