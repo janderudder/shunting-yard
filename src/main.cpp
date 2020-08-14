@@ -53,10 +53,10 @@ int main(int const argc, char** argv)
 
     // postfix expression
     ////////////////////////////////////////////////////////////////////////
-    auto const prefix_expression = to_postfix_expression(tokens);
+    auto const postfix_expression = to_postfix_expression(tokens);
 
     std::cout << "output:\n";
-    for (auto const& token : prefix_expression) {
+    for (auto const& token : postfix_expression) {
         std::cout << to_string(token) << " ";
     }
     std::cout << "\n";
