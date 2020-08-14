@@ -10,7 +10,7 @@ auto to_string(parsing_result_t<Token> const& parsing_result) -> std::string
     using namespace std::string_literals;
 
     if (!token) {
-        return "Syntax error when parsing \""s + remainder.data() + "\"";
+        return "Syntax error in \""s + remainder.data() + "\"";
     }
 
     return {
