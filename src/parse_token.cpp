@@ -49,6 +49,7 @@ auto parse_operator(std::string_view input) -> parsing_result_t<Operator_token>
             case '-': return Operator_token{Operator_token::Id::Sub};
             case '*': return Operator_token{Operator_token::Id::Mul};
             case '/': return Operator_token{Operator_token::Id::Div};
+            case '%': return Operator_token{Operator_token::Id::Mod};
             default: return std::nullopt;
         }})(trimmed_input[0]);
 

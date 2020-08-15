@@ -31,6 +31,7 @@ auto to_string(Operator_token::Id id) -> std::string_view
     switch (id) {
         case Id::Add: return "+"; case Id::Sub: return "-";
         case Id::Mul: return "*"; case Id::Div: return "/";
+        case Id::Mod: return "%";
         default: return "§";
     };
 }

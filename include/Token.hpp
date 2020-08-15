@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 struct Operator_token
 {
-    enum class Id { Add, Sub, Mul, Div } const id;
+    enum class Id { Add, Sub, Mul, Div, Mod } const id;
 };
 
 
