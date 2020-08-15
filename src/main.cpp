@@ -9,35 +9,40 @@
 
 int main(int const argc, char** argv)
 {
+    // parse command line arguments
+    ////////////////////////////////////////////////////////////////////////
     Program_options program_options {argc, argv};
 
-    if (program_options.should_quit())
+    if (program_options.should_abort())
     {
-        std::cout << program_options.string() << "\n";
+        std::cout << program_options.message() << "\n";
         return program_options.exit_code();
     }
 
 
-    auto const input = program_options.string();
+    auto const input = program_options.positional(0);
     std::cout << "input: " <<  input << "\n\n";
 
 
-    // input parsing
+
+    // parse input
     ////////////////////////////////////////////////////////////////////////
     auto const [tokens, opt_error_remainder] = parse_infix_expression(input);
 
 
-    // syntax error handling
+
+    // handle syntax error
     ////////////////////////////////////////////////////////////////////////
     if (opt_error_remainder) {
-        std::cout << to_string(*opt_error_remainder) << "\n\n";
+        std::cout << to_string(*opt_error_remainder) << "\n";
         return 0;
     }
 
 
+
     // token list
     ////////////////////////////////////////////////////////////////////////
-    if (program_options.get_switch(Program_options::Show_token_list))
+    if (program_options.option(Program_options::Show_token_list))
     {
         std::cout << "tokens (" << tokens.size() << "):\n";
         for (unsigned i=0; i < tokens.size(); ++i)
@@ -49,6 +54,7 @@ int main(int const argc, char** argv)
         }
         std::cout << "\n\n";
     }
+
 
 
     // postfix expression
